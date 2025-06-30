@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B34761E62E12C69500EB58E5 /* CocoaMQTT in Frameworks */ = {isa = PBXBuildFile; productRef = B34761E52E12C69500EB58E5 /* CocoaMQTT */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		B34761C32E12C13200EB58E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B34761E62E12C69500EB58E5 /* CocoaMQTT in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 				B34761B62E12C13100EB58E5 /* SOSNow */,
 				B34761C52E12C13200EB58E5 /* SOSNowTests */,
 				B34761CF2E12C13300EB58E5 /* SOSNowUITests */,
+				B34761E42E12C69500EB58E5 /* Frameworks */,
 				B34761B52E12C13100EB58E5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +96,13 @@
 				B34761CC2E12C13300EB58E5 /* SOSNowUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B34761E42E12C69500EB58E5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -112,6 +125,7 @@
 			);
 			name = SOSNow;
 			packageProductDependencies = (
+				B34761E52E12C69500EB58E5 /* CocoaMQTT */,
 			);
 			productName = SOSNow;
 			productReference = B34761B42E12C13100EB58E5 /* SOSNow.app */;
@@ -195,6 +209,9 @@
 			);
 			mainGroup = B34761AB2E12C13100EB58E5;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B34761DF2E12C35000EB58E5 /* XCRemoteSwiftPackageReference "CocoaMQTT" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B34761B52E12C13100EB58E5 /* Products */;
 			projectDirPath = "";
@@ -397,6 +414,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is used to send emergency alerts.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -436,6 +454,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is used to send emergency alerts.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -593,6 +612,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B34761DF2E12C35000EB58E5 /* XCRemoteSwiftPackageReference "CocoaMQTT" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/emqtt/CocoaMQTT.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B34761E52E12C69500EB58E5 /* CocoaMQTT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B34761DF2E12C35000EB58E5 /* XCRemoteSwiftPackageReference "CocoaMQTT" */;
+			productName = CocoaMQTT;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B34761AC2E12C13100EB58E5 /* Project object */;
 }
