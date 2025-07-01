@@ -10,6 +10,7 @@ import CoreLocation
 import MapKit // Import MapKit for the Map view
 
 struct ContentView: View {
+    @EnvironmentObject private var appState: AppState
     @StateObject private var locationManager = LocationManager()
     @StateObject private var mqttManager = MQTTManager()
     @State private var confirmationMessage: String? = nil
@@ -22,27 +23,15 @@ struct ContentView: View {
     }
 
     private var statusText: String {
-        if !mqttManager.isConnected {
-            return "Not Connected to MQTT"
-        } else if locationManager.authorizationStatus == .notDetermined {
-            return "Location permission not determined."
-        } else if locationManager.authorizationStatus == .denied || locationManager.authorizationStatus == .restricted {
-            return "Location access denied. Please enable in Settings."
-        } else if locationManager.location == nil {
-            return "Acquiring Location..."
+        if mqttManager.isConnected {
+            return String(localized: "online")
         } else {
-            return "ONLINE"
+            return String(localized: "offline")
         }
     }
 
     private var statusColor: Color {
-        if isReadyToSend {
-            return .green
-        } else if mqttManager.isConnected && locationManager.location == nil {
-            return .orange
-        } else {
-            return .red
-        }
+        return mqttManager.isConnected ? .green : .red
     }
 
     var body: some View {
@@ -62,6 +51,11 @@ struct ContentView: View {
                             .background(statusColor.opacity(0.8))
                             .foregroundColor(.white)
                             .cornerRadius(10)
+                            .onTapGesture {
+                                if !mqttManager.isConnected {
+                                    mqttManager.connect()
+                                }
+                            }
                         
                         NavigationLink(destination: SettingsView()) {
                             Image(systemName: "gearshape.fill")
@@ -96,7 +90,7 @@ struct ContentView: View {
                     Button(action: {
                         sendAlert(type: "general_emergency")
                     }) {
-                        Label("General Emergency", systemImage: "exclamationmark.triangle.fill")
+                        Label("general_emergency", systemImage: "exclamationmark.triangle.fill")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
@@ -112,7 +106,7 @@ struct ContentView: View {
                     Button(action: {
                         sendAlert(type: "fire_alert")
                     }) {
-                        Label("Fire Alert", systemImage: "flame.fill")
+                        Label("fire_alert", systemImage: "flame.fill")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
@@ -129,7 +123,7 @@ struct ContentView: View {
                     Button(action: {
                         sendAlert(type: "flood_alert")
                     }) {
-                        Label("Flood Alert", systemImage: "cloud.heavyrain.fill")
+                        Label("flood_alert", systemImage: "cloud.heavyrain.fill")
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
@@ -160,7 +154,7 @@ struct ContentView: View {
     private func sendAlert(type: String) {
         guard let location = locationManager.location else {
             print("Error: Location not available when trying to send alert.")
-            confirmationMessage = "Error: Location not available!"
+            confirmationMessage = String(localized: "location_not_available")
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 self.confirmationMessage = nil
             }
@@ -184,14 +178,15 @@ struct ContentView: View {
             let jsonData = try JSONSerialization.data(withJSONObject: payload, options: [])
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 mqttManager.publish(message: jsonString)
-                confirmationMessage = "SOS Sent: \(type.replacingOccurrences(of: "_", with: " ").capitalized)"
+                let localizedAlertType = NSLocalizedString(type, comment: "")
+                confirmationMessage = String(format: NSLocalizedString("sos_sent", comment: ""), localizedAlertType)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     self.confirmationMessage = nil
                 }
             }
         } catch {
             print("Error encoding JSON: \(error.localizedDescription)")
-            confirmationMessage = "Error sending SOS!"
+            confirmationMessage = String(localized: "error_sending_sos")
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 self.confirmationMessage = nil
             }

@@ -1,0 +1,9 @@
+
+"general_emergency" = "일반 비상 사태";
+"fire_alert" = "화재 경보";
+"flood_alert" = "홍수 경보";
+"online" = "온라인";
+"offline" = "오프라인";
+"sos_sent" = "SOS 전송됨: %@";
+"error_sending_sos" = "SOS 전송 오류!";
+"location_not_available" = "오류: 위치를 사용할 수 없습니다!";

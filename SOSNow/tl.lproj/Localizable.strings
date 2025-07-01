@@ -1,0 +1,9 @@
+
+"general_emergency" = "Pangkalahatang Emergency";
+"fire_alert" = "Alerto sa Sunog";
+"flood_alert" = "Alerto sa Baha";
+"online" = "Online";
+"offline" = "Offline";
+"sos_sent" = "SOS Ipinadala: %@";
+"error_sending_sos" = "Error sa pagpapadala ng SOS!";
+"location_not_available" = "Error: Hindi available ang lokasyon!";

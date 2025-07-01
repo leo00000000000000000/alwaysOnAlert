@@ -1,0 +1,9 @@
+
+"general_emergency" = "一般紧急情况";
+"fire_alert" = "火警";
+"flood_alert" = "洪水警报";
+"online" = "在线";
+"offline" = "离线";
+"sos_sent" = "SOS 已发送: %@";
+"error_sending_sos" = "发送SOS时出错！";
+"location_not_available" = "错误：位置不可用！";

@@ -1,0 +1,9 @@
+
+"general_emergency" = "General Emergency";
+"fire_alert" = "Fire Alert";
+"flood_alert" = "Flood Alert";
+"online" = "Online";
+"offline" = "Offline";
+"sos_sent" = "SOS Sent: %@";
+"error_sending_sos" = "Error sending SOS!";
+"location_not_available" = "Error: Location not available!";

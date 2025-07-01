@@ -1,3 +1,4 @@
 paho-mqtt
 Flask
 Flask-SocketIO
+requests

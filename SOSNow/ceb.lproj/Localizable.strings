@@ -1,0 +1,9 @@
+
+"general_emergency" = "Kinatibuk-ang Emerhensya";
+"fire_alert" = "Alerto sa Sunog";
+"flood_alert" = "Alerto sa Baha";
+"online" = "Online";
+"offline" = "Offline";
+"sos_sent" = "SOS Gipadala: %@";
+"error_sending_sos" = "Sayop sa pagpadala sa SOS!";
+"location_not_available" = "Sayop: Dili magamit ang lokasyon!";
