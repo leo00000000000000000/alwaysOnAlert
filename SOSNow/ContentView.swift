@@ -62,6 +62,11 @@ struct ContentView: View {
                                 .font(.title2)
                                 .foregroundColor(.accentColor)
                         }
+                        NavigationLink(destination: IDVerificationView()) {
+                            Image(systemName: "person.text.rectangle")
+                                .font(.title2)
+                                .foregroundColor(.accentColor)
+                        }
                     }
                     .padding(.bottom, 20)
 
@@ -138,13 +143,10 @@ struct ContentView: View {
 
                     Spacer()
                 }
-                .padding()
-                .frame(width: geometry.size.width, height: geometry.size.height)
-                .onAppear(perform: setup)
-                .navigationBarHidden(true) // Hide default navigation bar
-            } // GeometryReader ends here
+                // Map and other UI elements
         }
     }
+}
 
     private func setup() {
         locationManager.requestPermission()
