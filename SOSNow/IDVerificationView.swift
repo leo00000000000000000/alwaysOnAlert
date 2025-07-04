@@ -1,4 +1,3 @@
-
 //
 //  IDVerificationView.swift
 //  SOSNow
@@ -18,6 +17,7 @@ enum VerificationStep {
 }
 
 struct IDVerificationView: View {
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject private var appState: AppState
     @State private var isCameraAuthorized = false
     @State private var idImage: UIImage?
@@ -34,12 +34,14 @@ struct IDVerificationView: View {
     var body: some View {
         VStack {
             if appState.idVerificationStatus == "Verified" {
+                Spacer()
                 Text("Welcome, \(appState.userName)!")
                     .font(.largeTitle)
                     .padding()
                 Text("Your ID has been verified.")
                     .font(.headline)
                     .padding()
+                Spacer()
                 Button("Re-verify") {
                     self.appState.idVerificationStatus = "Not Verified"
                     self.appState.userName = ""
@@ -48,6 +50,8 @@ struct IDVerificationView: View {
                 .background(Color.red)
                 .foregroundColor(.white)
                 .cornerRadius(10)
+
+                
             } else {
                 Text("ID Verification")
                     .font(.largeTitle)
@@ -152,7 +156,7 @@ struct IDVerificationView: View {
                         .padding()
                 }
             }
-        }
+            }
         .onAppear(perform: checkCameraPermission)
         .onChange(of: switchToFaceCapture) { oldValue, newValue in
             if newValue {
@@ -256,7 +260,7 @@ struct IDVerificationView: View {
                 self.verificationResult = "Error detecting face in ID image."
                 return
             }
-            guard let idObservations = request.results as? [VNFaceObservation], let idFace = idObservations.first else {
+            guard let idObservations = request.results as? [VNFaceObservation], idObservations.first != nil else {
                 self.verificationResult = "No face detected in ID image."
                 return
             }
@@ -267,14 +271,14 @@ struct IDVerificationView: View {
                     self.verificationResult = "Error detecting face in live image."
                     return
                 }
-                guard let liveObservations = request.results as? [VNFaceObservation], let liveFace = liveObservations.first else {
+                guard let liveObservations = request.results as? [VNFaceObservation], liveObservations.first != nil else {
                     self.verificationResult = "No face detected in live image."
                     return
                 }
 
                 // Simple comparison: In a real app, you'd use more advanced techniques
                 // For now, we'll just check if faces are detected in both.
-                // A more robust solution would involve face recognition models.
+                // A more robust solution would would involve face recognition models.
                 DispatchQueue.main.async {
                     self.verificationResult = "Faces detected in both images. Verifying..."
                     self.finalVerification() // Directly proceed to final verification
@@ -306,6 +310,7 @@ struct IDVerificationView: View {
         self.appState.userName = self.userName
         self.verificationResult = "ID and Face Verified!"
         self.currentStep = .completed
+        print("IDVerificationView: ID and Face Verified. appState.idVerificationStatus: \(appState.idVerificationStatus), appState.userName: \(appState.userName)")
     }
 }
 

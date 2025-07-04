@@ -26,4 +26,25 @@ class AppState: ObservableObject {
             UserDefaults.standard.set(userName, forKey: "userName")
         }
     }
+
+    @Published var userNumber: String = UserDefaults.standard.string(forKey: "userNumber") ?? "" {
+        didSet {
+            UserDefaults.standard.set(userNumber, forKey: "userNumber")
+        }
+    }
+
+    @Published var selectedCountryId: String = UserDefaults.standard.string(forKey: "selectedCountryId") ?? "US" {
+        didSet {
+            UserDefaults.standard.set(selectedCountryId, forKey: "selectedCountryId")
+        }
+    }
+
+    var selectedCountry: Country {
+        get {
+            allCountries.first(where: { $0.id == selectedCountryId }) ?? allCountries[0]
+        }
+        set {
+            selectedCountryId = newValue.id
+        }
+    }
 }

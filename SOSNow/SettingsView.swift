@@ -6,37 +6,62 @@
 //
 
 import SwiftUI
+import Foundation
 
-struct Language: Identifiable, Hashable {
-    let id: String
-    let name: String
-}
-
-let supportedLanguages: [Language] = [
-    Language(id: "en", name: "English"),
-    Language(id: "tl", name: "Tagalog"),
-    Language(id: "ceb", name: "Bisaya"),
-    Language(id: "zh", name: "Chinese"),
-    Language(id: "ko", name: "Korean")
-]
 
 struct SettingsView: View {
     @EnvironmentObject private var appState: AppState
     @AppStorage("userName") private var userName: String = ""
-    @AppStorage("userNumber") private var userNumber: String = ""
+    
+    @State private var isPhoneNumberValid: Bool = false
+    @State private var isShowingOTPView = false
+    @State private var isShowingIDVerificationView = false
 
     var body: some View {
         Form {
             Section(header: Text("User Information")) {
-                TextField("Your Name", text: $userName)
-                    .autocapitalization(.words)
-                TextField("Your Phone Number", text: $userNumber)
-                    .keyboardType(.phonePad)
+                HStack {
+                    TextField("Your Name", text: $userName)
+                    Spacer()
+                    Button(action: {
+                        isShowingIDVerificationView = true
+                    }) {
+                        Image(systemName: "person.text.rectangle")
+                            .font(.title2)
+                            .foregroundColor(.accentColor)
+                    }
+                    .buttonStyle(PlainButtonStyle()) // Remove default button styling
+                }
+                HStack {
+                    NavigationLink(destination: CountryPickerView().environmentObject(appState)) {
+                        HStack {
+                            Text("\(appState.selectedCountry.flag()) \(appState.selectedCountry.dialCode)")
+                            Spacer()
+                        }
+                    }
+                    .listRowSeparator(.hidden)
+
+                    PhoneNumberInputView(
+                        phoneNumber: $appState.userNumber,
+                        isValidNumber: $isPhoneNumberValid,
+                        placeholder: "Your Phone Number"
+                    )
+                    
+                    Button(action: {
+                        // Trigger OTP verification
+                        print("SettingsView - Verify button tapped. Current national phoneNumber: \(appState.userNumber)")
+                        isShowingOTPView = true
+                    }) {
+                        Text("Verify")
+                    }
+                    .disabled(!isPhoneNumberValid)
+                }
             }
             
             Section(header: Text("Language")) {
                 Picker("Language", selection: $appState.language) {
-                    ForEach(supportedLanguages) { language in
+                    ForEach(supportedLanguages) {
+                        language in
                         Text(language.name).tag(language.id)
                     }
                 }
@@ -61,11 +86,25 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Settings")
+        .sheet(isPresented: $isShowingOTPView) {
+            OTPView(phoneNumber: $appState.userNumber, isShowingOTPView: $isShowingOTPView)
+                .environmentObject(appState)
+        }
+        .sheet(isPresented: $isShowingIDVerificationView) {
+            IDVerificationView()
+        }
+        .onAppear {
+            print("SettingsView - onAppear: appState.userNumber = \(appState.userNumber)")
+        }
+        .onDisappear {
+            print("SettingsView - onDisappear: appState.userNumber = \(appState.userNumber)")
+        }
     }
 }
 
 #Preview {
     NavigationView {
         SettingsView()
+            .environmentObject(AppState())
     }
 }

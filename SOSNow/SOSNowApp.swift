@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @main
 struct SOSNowApp: App {
     @StateObject private var appState = AppState()

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 import CoreLocation
 import MapKit // Import MapKit for the Map view
 
@@ -14,9 +15,6 @@ struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var mqttManager = MQTTManager()
     @State private var confirmationMessage: String? = nil
-
-    @AppStorage("userName") private var userName: String = ""
-    @AppStorage("userNumber") private var userNumber: String = ""
 
     private var isReadyToSend: Bool {
         mqttManager.isConnected && locationManager.location != nil
@@ -62,11 +60,7 @@ struct ContentView: View {
                                 .font(.title2)
                                 .foregroundColor(.accentColor)
                         }
-                        NavigationLink(destination: IDVerificationView()) {
-                            Image(systemName: "person.text.rectangle")
-                                .font(.title2)
-                                .foregroundColor(.accentColor)
-                        }
+                        
                     }
                     .padding(.bottom, 20)
 
@@ -82,10 +76,11 @@ struct ContentView: View {
                     }
 
                     // Map View
-                    Map(coordinateRegion: .constant(MKCoordinateRegion(
-                        center: locationManager.location?.coordinate ?? CLLocationCoordinate2D(latitude: 0, longitude: 0),
-                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                    )), showsUserLocation: true, userTrackingMode: .constant(.follow))
+                    Map {
+                        UserAnnotation()
+                    }
+                    .mapStyle(.standard(elevation: .realistic))
+                    .mapControlVisibility(.automatic)
                         .frame(height: geometry.size.height * 0.4)
                         .cornerRadius(15)
                         .shadow(radius: 5)
@@ -169,11 +164,11 @@ struct ContentView: View {
             "longitude": location.coordinate.longitude
         ]
 
-        if !userName.isEmpty {
-            payload["userName"] = userName
+        if !appState.userName.isEmpty {
+            payload["userName"] = appState.userName
         }
-        if !userNumber.isEmpty {
-            payload["userNumber"] = userNumber
+        if !appState.userNumber.isEmpty {
+            payload["userNumber"] = appState.userNumber
         }
 
         do {

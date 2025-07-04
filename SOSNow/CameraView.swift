@@ -140,8 +140,6 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
             if captureSession.canAddOutput(photoOutput) {
                 captureSession.addOutput(photoOutput)
                 print("CameraViewController: Added photo output.")
-            } else {
-                print("CameraViewController: Cannot add photo output.")
             }
 
             DispatchQueue.main.async {
@@ -188,7 +186,7 @@ class CameraViewController: UIViewController, AVCapturePhotoCaptureDelegate {
                     self.currentCameraPosition = position
                     print("CameraViewController: Successfully added new camera input for position: \(position.rawValue)")
                 } else {
-                    print("CameraViewController: Cannot add new input for position: \(position.rawValue) during update.")
+                    print("CameraViewController: Cannot add new input for position: \(position.rawValue)")
                 }
                 self.captureSession.commitConfiguration()
                 print("CameraViewController: Committed session configuration.")
